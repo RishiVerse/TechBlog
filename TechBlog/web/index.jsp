@@ -35,7 +35,7 @@
                     
                     <h3>Hello, Welcome to TechBlog</h3>
                     <p>Computer programming or coding is the composition of sequences of instructions, called programs, that computers can follow to perform tasks</p>
-                    <button class="btn btn-outline-light">Start! its free</button>
+                    <a href="register.jsp"><button class="btn btn-outline-light">Start! its free</button></a>
                     <a href="login.jsp" class="btn btn-outline-light">Login</a>
                 </div>
             </div>

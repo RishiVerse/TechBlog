@@ -5,6 +5,10 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="tech.entities.*" %>
+<%@ page import="tech.servlet.*" %>
+
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -37,16 +41,30 @@
                             <div class="card-header">
                                 <h1>Login</h1>
                             </div>
+                            
+                            <%
+                            Message m=(Message) session.getAttribute("msg");
+                            if(m!=null)
+                            {
+                            %>
+                            <div class="alert alert-primary">
+                                 <%= m.getContent()%>                           
+                            </div>
+                            <%
+                            session.removeAttribute("msg");
+                            
+                                }
+                            %>
                             <div class="card-body">
-                                <form>
+                                <form action="LoginServlet" method="post">
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                        <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                                         <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="exampleInputPassword1" class="form-label">Password</label>
-                                        <input type="password" class="form-control" id="exampleInputPassword1">
+                                        <input name="password" type="password" class="form-control" id="exampleInputPassword1">
                                     </div>
                                     <div class="mb-3 form-check">
                                         <input type="checkbox" class="form-check-input" id="exampleCheck1">

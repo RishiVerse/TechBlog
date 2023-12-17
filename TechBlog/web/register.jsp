@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="tech.servlet.*" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -27,34 +28,44 @@
     <body>
         <%@include file="nav_bar.jsp" %>
         
-        <main class="d-flex align-items-center primary-color clipping" style="height :90vh">
+        <main class="d-flex align-items-center primary-color clipping" style="height: 95vh">
             <div class="container">
                 <div class="row justify-content-center">
                     
                     <div class="col-md-6">
-                        <div class="card">
+                        <div class="card mt-0">
                             <div class="card-header">
                                 <h1>Register</h1>
                             </div>
-                            <div class="card-body">
-                                <form>
+                            <div class="card-body" method="post">
+                                <form id="reg-form" action="RegisterServlet">
                                     <div class="mb-3">
                                         <label for="user_name" class="form-label">User Name</label>
-                                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                        <input name="user_name" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                                         <div id="user_name" class="form-text"></div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                        <input name="email_address" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                                         <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="exampleInputPassword1" class="form-label">Password</label>
-                                        <input type="password" class="form-control" id="exampleInputPassword1">
+                                        <input name="password" type="password" class="form-control" id="exampleInputPassword1">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="gender" class="form-label">Gender</label>
+                                        <br>
+                                        <input type="radio" id="gender" name="gender" value="male">Male
+                                        <input type="radio" id="gender" name="gender" value="female">Female
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea class="form-control" name="about" id="" cols="30" rows="1.1" placeholder="Something about yourself"></textarea>
+                                        
                                     </div>
                                     <div class="mb-3 form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                                        <input name="check" type="checkbox" class="form-check-input" id="exampleCheck1">
+                                        <label class="form-check-label" for="exampleCheck1">Terms and Conditions</label>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </form>
@@ -64,9 +75,43 @@
                 </div>
             </div>
         </main>
-         <!-- Javascript -->
-            <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+        <!-- Javascript -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
+        <script>
+            $('#reg-form').on('submit', function(event){
+                event.preventDefault();
+                let formData = $(this).serialize();
+    
+                $.ajax({
+                    url: "RegisterServlet",
+                    type: 'POST',
+                    data: formData,
+                    success: function(data, textStatus, jqXHR) {
+                        console.log(data);
+                        Swal.fire({
+                            title: 'Success!',
+                            text: 'Do you want to continue',
+                            icon: 'success',
+                            confirmButtonText: 'Okay'
+                        }).then((result) => {
+                            // Redirect to another page after the user clicks 'Okay' on the Swal modal
+                            if (result.isConfirmed) {
+                                window.location.href = "login.jsp"; // Replace with your desired page URL
+                            }
+                        });
+                        // Handle success
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log(jqXHR);
+                        // Handle errors
+                    }
+                });
+            });
+        </script>
+        
     </body>
 </html>
