@@ -10,18 +10,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import tech.dao.UserDao;
-import tech.helper.ConnectionProvider;
-import tech.entities.User;
-import jakarta.servlet.http.*;
+import jakarta.servlet.http.HttpSession;
 import tech.entities.Message;
-
 
 /**
  *
  * @author rishabhmaurya
  */
-public class LoginServlet extends HttpServlet {
+public class LogoutServlet extends HttpServlet {
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,45 +36,21 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");
+            out.println("<title>Servlet LogoutServlet</title>");
             out.println("</head>");
             out.println("<body>");
             
-            String username=request.getParameter("email");
-            String password=request.getParameter("password");
+            
+            HttpSession s=request.getSession();
+            s.removeAttribute("currentUser");
+            
+            Message m=new Message("Logout Success!","success","alert-success");
+            
+            s.setAttribute("msg",m);
+            
+            response.sendRedirect("login.jsp");
             
             
-            UserDao dao=new UserDao(ConnectionProvider.getConnection());
-            
-            User u=dao.getUserandPasswordById(username, password);
-            
-            if(u==null)
-            {
-                
-                Message msg=new Message("User not found!!","error","alert-danger");
-                
-                HttpSession s=request.getSession();
-                s.setAttribute("msg", msg);
-              
-                
-                response.sendRedirect("login.jsp");
-                
-                
-                
-            }
-            else
-            {
-                HttpSession s=request.getSession();
-                s.setAttribute("currentUser", u);
-                response.sendRedirect("profile.jsp");
-                
-                
-                
-            }
-            
-            
-            
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
