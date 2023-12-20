@@ -32,6 +32,7 @@ response.sendRedirect("login.jsp");
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <title>Profile</title>
         
+
     </head>
     <body>
         
@@ -77,12 +78,13 @@ response.sendRedirect("login.jsp");
               
                                     <a class="nav-link" href="LogoutServlet">Logout</a>
 
-                                    <a class="nav-link"><%= user.getName()%></a>
+                                    <a class="nav-link" href="#!" data-bs-toggle="modal" data-bs-target="#ProfileModal"><%= user.getName()%></a>
 
         
             </form>
         </div>
     </div>
+                                    
 </nav>
     
 
@@ -90,5 +92,140 @@ response.sendRedirect("login.jsp");
 <!--End -->
 
 
+
+
+<!-- Modal -->
+<div class="modal fade" id="ProfileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header primary-color text-center text-white">
+        <h1 class="modal-title fs-5 " id="exampleModalLabel"> TechBlog</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+      </div>
+      <div class="modal-body" >
+          <div class="container text-center">
+          <img src="images/null.png" class="img-fluid">
+          <br>
+          <h5 class="modal-title"> <%= user.getName()%> </h5>
+          </div>
+          <div class="container text-white text-center" id="edit">
+              <form action="EditServlet" method="post" enctype="multipart/form-data">
+    <table class="table">
+    <tr>
+      <td>Id</td>
+      <td><%= user.getId()%></td>
+    
+    </tr>
+    <tr>
+      <td>Name</td>
+      <td><input name="name" type="text" value="<%= user.getName()%>" class="form-control" ></td>
+    
+    </tr>
+    <tr>
+    
+      <td>Email</td>
+      <td><input name="email" type="email" value="<%= user.getEmail()%>" class="form-control"  aria-describedby="emailHelp"></td>
+      
+    </tr>
+    <tr>
+     
+      <td>Gender</td>
+      <td><input name="gender" type="text" value="<%= user.getGender()%>" class="form-control" ></td>
+    </tr>
+     <tr>
+     
+      <td>About</td>
+      <td><input name="About" type="text" value="<%= user.getAbout()%>" class="form-control" ></td>
+    </tr>
+         <tr>
+     
+      <td>Profile Pic</td>
+      <td><input name="photo" type="file" class="btn" ></td>
+    </tr>
+
+     <div class="container">
+          
+        <button  name ="save" type="submit" class="btn btn-primary">Save</button>
+      </div>
+              </table>
+
+              </form>
+    
+          </div>
+                 
+          
+           
+          <table class="table">
+
+              <tbody id="information">
+    <tr>
+      <td>Name</td>
+      <td><%= user.getName()%></td>
+    
+    </tr>
+    <tr>
+    
+      <td>Email</td>
+      <td><%= user.getEmail()%></td>
+      
+    </tr>
+    <tr>
+     
+      <td>Gender</td>
+      <td><%= user.getGender()%></td>
+    </tr>
+     <tr>
+     
+      <td>About</td>
+      <td><%= user.getAbout()%></td>
+    </tr>
+              </tbody>
+          </table>
+     
+    
+      <div class="modal-footer">
+          
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button id="edit-btn" type="button" class="btn btn-primary">Expand</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+        <!-- Javascript -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
+        <script>
+            $(document).ready(function()
+            {
+                let flag=false;
+                $("#edit").hide();
+                $('#edit-btn').click(function()
+                {
+                    if(flag==false){
+                    $("#information").hide();
+                                    $("#edit").show();
+
+                                            flag=true
+
+                    }
+                    else
+                    {
+                        $("#information").show();
+                         $("#edit").hide();
+                        flag=false
+                    }
+                    
+                })
+            })
+            
+        </script>    
+        
     </body>
 </html>

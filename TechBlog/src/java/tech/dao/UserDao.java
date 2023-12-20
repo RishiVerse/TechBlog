@@ -34,6 +34,8 @@ public class UserDao {
             pstm.setString(4,user.getGender());
             
             pstm.setString(5,user.getAbout());
+           // pstm.setString(6,user.getProfile());
+
             
             pstm.execute();
             flag=true;
@@ -65,6 +67,7 @@ public class UserDao {
                 String pwd=r.getString("password");
                 String genders=r.getString("gender");
                 String abouts=r.getString("about");
+
                 
                 user.setAbout(abouts);
                 
@@ -75,6 +78,7 @@ public class UserDao {
                 user.setPassword(pwd);
                 
                 user.setGender(genders);
+              //  user.setProfile("null.png");
                 
                 
                 
@@ -91,6 +95,44 @@ public class UserDao {
         
         return user;
     }
+    
+    
+    
+    public boolean updateUser(User user)
+    {
+        boolean b=false;
+        try{
+            String query="insert users set name=? , email=?, password=? , gender=? , about=? where id=? ";
+            PreparedStatement prep=conn.prepareStatement(query);
+            
+          
+           
+ 
+
+                
+                prep.setString(1,user.getName());
+                
+                prep.setString(2,user.getEmail());
+                
+                prep.setString(3,user.getPassword());
+                
+                prep.setString(4,user.getGender());
+                
+                prep.setString(5,user.getAbout());
+                prep.executeUpdate();
+                b=true;
+                return b;
+          
+            
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return b;
+        
+    }
+    
     
     
     

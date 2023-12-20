@@ -1,7 +1,7 @@
 /*
-* Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-* Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
-*/
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package tech.servlet;
 
 import java.io.IOException;
@@ -10,13 +10,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.annotation.MultipartConfig;
-
-// Your servlet code...
-
-
-
-import java.sql.Timestamp;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 import tech.dao.UserDao;
 import tech.entities.User;
 import tech.helper.ConnectionProvider;
@@ -25,9 +20,8 @@ import tech.helper.ConnectionProvider;
  *
  * @author rishabhmaurya
  */
-@MultipartConfig
-public class RegisterServlet extends HttpServlet {
-    
+public class EditServlet extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -45,39 +39,44 @@ public class RegisterServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RegisterServlet</title>");
+            out.println("<title>Servlet EditServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            String user=request.getParameter("user_name");
+            
+             String user=request.getParameter("name");
             String password=request.getParameter("password");
-            String email=request.getParameter("email_address");
+            String email=request.getParameter("email");
             String about=request.getParameter("about");
-            String check=request.getParameter("check");
             String gender=request.getParameter("gender");
-                        String profile="null.png";
-
-            out.println(check);
-            out.println(email);
-            out.println(password);
-            out.println(user);
-            out.println(gender);
-            out.println(about);
-            User users=new User(user,email,gender,about,password);
+            Part part=request.getPart("photo");
             
-            UserDao dao=new UserDao(ConnectionProvider.getConnection());
+            HttpSession s=request.getSession();
+            User users=(User)s.getAttribute("currentUser");
+            
+            users.setAbout(about);
+            users.setGender(gender);
+            
+            users.setEmail(email);
+            
+            users.setName(user);
+            users.setPassword(password);
+            
+             UserDao dao=new UserDao(ConnectionProvider.getConnection());
             
             
-            if(dao.saveUser(users))
-                out.print("database insertion done");
+            if(dao.updateUser(users))
+                out.print("database update done");
             else
                 out.print("failed");
             
-            out.println("<h1>Servlet RegisterServlet at " + request.getContextPath() + "</h1>");
+
+
+            out.println("<h1>Servlet EditServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -92,7 +91,7 @@ public class RegisterServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-    
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -106,7 +105,7 @@ public class RegisterServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-    
+
     /**
      * Returns a short description of the servlet.
      *
@@ -116,5 +115,5 @@ public class RegisterServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
+
 }
